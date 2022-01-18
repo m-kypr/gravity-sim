@@ -7,3 +7,13 @@ You need [Python3](https://www.python.org/downloads/) and [pygame](https://pypi.
 
 
 ![A screenshot](Capture.PNG "Screenshot")
+
+
+
+
+
+
+### TODO
+
+
+* MORE BALLS
