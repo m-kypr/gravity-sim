@@ -6,4 +6,4 @@ You need [Python3](https://www.python.org/downloads/) and [pygame](https://pypi.
 [How to install pip packages](https://opensource.com/article/20/3/pip-linux-mac-windows)
 
 
-![A screenshot](Capture.png)
+![A screenshot](Capture.PNG)
