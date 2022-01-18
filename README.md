@@ -10,10 +10,3 @@ You need [Python3](https://www.python.org/downloads/) and [pygame](https://pypi.
 
 
 
-
-
-
-### TODO
-
-
-* MORE BALLS
