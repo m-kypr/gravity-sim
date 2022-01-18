@@ -69,7 +69,7 @@ def process_textin():
         if textin[0][1].lower() == 'c':
             for body in bodies:
                 body.color = random.choice(colors)
-        if textin[0][1].lower() == 't':
+        elif textin[0][1].lower() == 't':
             global show_trails
             show_trails = not show_trails
         elif textin[0][1].lower() == 'h':
