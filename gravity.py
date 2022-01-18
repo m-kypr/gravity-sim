@@ -1,5 +1,4 @@
 from __future__ import annotations
-from math import prod
 import sys
 import pygame
 import time
