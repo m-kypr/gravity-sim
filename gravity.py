@@ -1,4 +1,5 @@
 from __future__ import annotations
+from math import prod
 import sys
 import pygame
 import time
@@ -6,13 +7,16 @@ import random
 
 
 class Body:
-    def __init__(self, x, y, mass, radius, v) -> None:
+    def __init__(self, x, y, mass, radius, v, color=None) -> None:
         self.x = x
         self.y = y
         self.v = v
         self.m = mass
         self.r = radius
-        self.color = random.choice(colors)
+        if not color:
+            self.color = random.choice(colors)
+        else:
+            self.color = color
         self.trail = []
 
     def update(self, body: Body):
@@ -57,6 +61,22 @@ def init_bodies():
     return bdis
 
 
+def init_stars(n=200):
+    s = [1, 1.5, 2, 2.5]
+    maxs = int(max(s) * 2)
+    from itertools import product
+    strs = []
+    star_colors = [(127, 127, 127), (255, 255, 255),
+                   (255, 207, 181), (199, 210, 255)]
+    xrange = range(maxs, width - maxs, maxs)
+    yrange = range(maxs, height - maxs, maxs)
+    positions = list(product(xrange, yrange))
+    random.shuffle(positions)
+    strs = [Body(*positions[i], 0, random.choice(s), [0, 0],
+                 random.choice(star_colors)) for i in range(n)]
+    return strs
+
+
 def init_font(font=None):
     if not font:
         font = random.choice(pygame.font.get_fonts())
@@ -72,6 +92,9 @@ def process_textin():
         elif textin[0][1].lower() == 't':
             global show_trails
             show_trails = not show_trails
+        elif textin[0][1].lower() == 'f':
+            global myfont, myfontsmall
+            myfont, myfontsmall, _ = init_font()
         elif textin[0][1].lower() == 'h':
             print(help)
         else:
@@ -127,7 +150,7 @@ def process_textin():
         else:
             status = [time.time(), red, 'ValueError2']
     if not status:
-        status = [time.time(), white, f">{''.join([x[1] for x in textin])}"]
+        status = [time.time(), white, f" >{''.join([x[1] for x in textin])}"]
 
     textin.clear()
 
@@ -152,6 +175,7 @@ colors += [(x[0] // 2, x[1] // 2, x[2] // 2) for x in colors]
 
 pygame.init()
 pygame.font.init()
+random.seed(time.time())
 myfont, myfontsmall, _ = init_font('sourcecodepro')
 clock = pygame.time.Clock()
 
@@ -164,6 +188,7 @@ red = 255, 0, 0
 screen = pygame.display.set_mode(size, pygame.NOFRAME)
 selected = []
 bodies = init_bodies()
+stars = init_stars()
 textin = []
 status = []
 help = '\n    '.join(['commands:', 'global:', *('\n    '.join(['', 'h - help', 'g{number} - multiply gravitational constant G by number', 't{number} - set length of trail', 'i{number} - set number of iterations per tick',
@@ -233,6 +258,9 @@ while 1:
     iterations(ITERATIONS)
 
     screen.fill(black)
+
+    for star in stars:
+        pygame.draw.circle(screen, star.color, (star.x, star.y), star.r)
 
     for body in bodies:
         pygame.draw.circle(screen, body.color, (body.x, body.y), body.r)
